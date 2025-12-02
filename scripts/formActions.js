@@ -31,6 +31,8 @@ window.onload = function(){
     for(let input of inputs){
         input.onfocus = resaltar;
         input.addEventListener('blur', noResaltar);
+        input.addEventListener('blur', validarCampoVacio);
+        input.addEventListener('input', validarCampoCaracteresEspeciales)
     }
 
     for(let select of selects){
@@ -75,5 +77,32 @@ function noResaltar(evento){
     const clase = evento.target.classList.contains("selected");
     if(clase){
         evento.target.classList.remove("selected");
+    }
+}
+
+function validarCampoVacio(evento){
+    ;
+    if(evento.target.value.trim() === ""){
+        evento.target.classList.add("error");
+        evento.target.setAttribute("placeholder", "*El Campo No Puede Estar Vacio");
+    }
+    else{
+        evento.target.classList.remove("error");
+        evento.target.setAttribute("placeholder", "");
+    }
+}
+
+function validarCampoCaracteresEspeciales(evento) {
+
+    // Valor actual del input
+    let valor = evento.target.value;
+
+    // Dejar SOLO letras y números
+    let valorFiltrado = valor.replace(/[^A-Za-z0-9 ]/g, "");
+
+    // Si cambió, significa que había caracteres especiales → se eliminan
+    if (valor !== valorFiltrado) {
+        console.log("Se eliminaron caracteres especiales");
+        evento.target.value = valorFiltrado;  
     }
 }
